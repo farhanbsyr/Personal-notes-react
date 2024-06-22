@@ -1,7 +1,7 @@
 import React from "react";
 import NotesItem from "./NotesItem";
 
-const NotesList = ({ notes, onDelete, onArchive }) => {
+const NotesList = ({ onActive, notes, onDelete, onArchive }) => {
   // Filter notes based on archived status
   const activeNotes = notes.filter((note) => !note.archived);
   const archivedNotes = notes.filter((note) => note.archived);
@@ -22,6 +22,7 @@ const NotesList = ({ notes, onDelete, onArchive }) => {
               key={note.id}
               onArchive={onArchive}
               id={note.id}
+              archived={note.archived}
               onDelete={onDelete}
               {...note}
             />
@@ -38,8 +39,9 @@ const NotesList = ({ notes, onDelete, onArchive }) => {
           {archivedNotes.map((note) => (
             <NotesItem
               key={note.id}
-              onArchive={onArchive}
+              onActive={onActive}
               id={note.id}
+              archived={note.archived}
               onDelete={onDelete}
               {...note}
             />

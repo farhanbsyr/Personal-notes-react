@@ -16,6 +16,7 @@ class NotesApp extends React.Component {
     this.onDeleteHandler = this.onDeleteHandler.bind(this);
     this.onAddNotesHandler = this.onAddNotesHandler.bind(this);
     this.onAddSearchHandler = this.onAddSearchHandler.bind(this);
+    this.onActiveHandler = this.onActiveHandler.bind(this);
   }
 
   onDeleteHandler(id) {
@@ -26,6 +27,26 @@ class NotesApp extends React.Component {
 
     this.setState({ notes, filteredNotes });
     console.log(filteredNotes);
+  }
+
+  onActiveHandler(id) {
+    this.setState(() => {
+      const updatedNotes = this.state.notes.map((note) => {
+        if (note.id === id) {
+          return { ...note, archived: false };
+        }
+        return note;
+      });
+      const updateFilter = this.state.filteredNotes.map((note) => {
+        if (note.id === id) {
+          return { ...note, archived: false };
+        }
+        return note;
+      });
+      console.log(updateFilter);
+      console.log(updatedNotes);
+      return { notes: updatedNotes, filteredNotes: updateFilter };
+    });
   }
 
   onArchivedHandler(id) {
@@ -47,9 +68,9 @@ class NotesApp extends React.Component {
   }
   // coba pake if untuk ngebalikin penggunaan notes sebagai dtbase
   onAddSearchHandler({ search }) {
-    if (search.trim() === "") {
-      this.setState({ filteredNotes: [] });
-    }
+    // if (search.trim() === "") {
+    //   this.setState({ notes: [] });
+    // }
     const filteredNotes = this.state.notes.filter((note) =>
       note.title.toLowerCase().includes(search.toLowerCase())
     );
@@ -98,6 +119,7 @@ class NotesApp extends React.Component {
           }
           onArchive={this.onArchivedHandler}
           onDelete={this.onDeleteHandler}
+          onActive={this.onActiveHandler}
         />
       </>
     );
