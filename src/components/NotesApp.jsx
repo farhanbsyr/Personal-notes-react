@@ -11,6 +11,7 @@ class NotesApp extends React.Component {
     this.state = {
       notes: getInitialData(),
       filteredNotes: [],
+      search: "",
     };
     this.onArchivedHandler = this.onArchivedHandler.bind(this);
     this.onDeleteHandler = this.onDeleteHandler.bind(this);
@@ -68,13 +69,15 @@ class NotesApp extends React.Component {
   }
   // coba pake if untuk ngebalikin penggunaan notes sebagai dtbase
   onAddSearchHandler({ search }) {
-    // if (search.trim() === "") {
-    //   this.setState({ notes: [] });
-    // }
-    const filteredNotes = this.state.notes.filter((note) =>
-      note.title.toLowerCase().includes(search.toLowerCase())
+    if (search.trim() === "") {
+      this.setState({ filteredNotes: [] });
+    }
+    const filteredNotes = this.state.notes.filter(
+      (note) =>
+        note.title.toLowerCase().includes(search.toLowerCase()) ||
+        note.title.toLowerCase().includes(!search.toLowerCase())
     );
-    this.setState({ filteredNotes });
+    this.setState({ filteredNotes, search });
     console.log(filteredNotes);
   }
   onAddNotesHandler({ title, body }) {
@@ -113,7 +116,7 @@ class NotesApp extends React.Component {
         <NotesInput addNotes={this.onAddNotesHandler} />
         <NotesList
           notes={
-            this.state.filteredNotes.length > 0
+            this.state.filteredNotes.length > 0 || this.state.search !== ""
               ? this.state.filteredNotes
               : this.state.notes
           }
